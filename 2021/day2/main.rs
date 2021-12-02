@@ -12,13 +12,25 @@ fn main() {
     let whole_file = filename_to_string("input.txt").unwrap();
     let mut horizontal_position = 0;
     let mut depth = 0;
+    let mut aim = 0;
     whole_file.lines().for_each(|line| {
         let (direction_str, amount_str) = line.split_once(' ').unwrap();
         let amount = amount_str.parse::<u32>().unwrap();
+        // part 1:
+        // match direction_str {
+        //     "forward" => { horizontal_position += amount; },
+        //     "up" => { depth -= amount; },
+        //     "down" => { depth += amount; },
+        //     _ => {}
+        // }
+
         match direction_str {
-            "forward" => { horizontal_position += amount; },
-            "up" => { depth -= amount; },
-            "down" => { depth += amount; },
+            "forward" => { 
+                horizontal_position += amount;
+                depth += aim * amount;
+            },
+            "up" => { aim -= amount; },
+            "down" => { aim += amount; },
             _ => {}
         }
     });
