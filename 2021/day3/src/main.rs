@@ -9,19 +9,17 @@ fn main() {
         });
     });
 
-    let rate = |invert: bool| {
-        return usize::from_str_radix(
-            &bit_counts
-                .iter()
-                .map(|count| (if (*count > 0) ^ invert { '1' } else { '0' }))
-                .collect::<String>(),
-            2,
-        )
-        .expect("binary string");
-    };
+    let gamma_rate = u16::from_str_radix(
+        &bit_counts
+            .iter()
+            .map(|count| (if *count > 0 { '1' } else { '0' }))
+            .collect::<String>(),
+        2,
+    ).expect("binary string");
 
-    let gamma_rate = rate(false);
-    let epsilon_rate = rate(true);
+    let epsilon_rate = !(gamma_rate << 4) >> 4;
 
-    println!("{}", gamma_rate * epsilon_rate);
+    println!("gamma * epsilon {}", gamma_rate as usize * epsilon_rate as usize);
+
+    
 }
