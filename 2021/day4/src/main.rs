@@ -22,13 +22,6 @@ fn main() {
     let mut board_wins = vec![false; num_boards];
 
     for n in number_draw {
-        // println!("n={}", n);
-        // println!("board_wins {:?} num_board_wins {}", board_wins, num_board_wins);
-        
-        if num_board_wins == num_boards {
-            break;
-        }
-
         let mut board_idx = 0;
         for board in boards.iter_mut() {
             if board_wins[board_idx] {
@@ -40,9 +33,9 @@ fn main() {
             let mut col_counts = vec![0; board_size];
 
             for row in board.iter_mut() {
-                // if board_wins[board_idx] {
-                //     break;
-                // }
+                if board_wins[board_idx] {
+                    break;
+                }
 
                 let mut row_count = 0;
                 for elem in row {
@@ -53,21 +46,17 @@ fn main() {
                         row_count += 1;
                         col_counts[col] += 1;
                     }
-                    // print!("({},{}) r={} c={}\t", elem.0, elem.1 as u8, row_count, col_counts[col]);
                     if row_count == board_size || col_counts[col] == board_size {
                         if !board_wins[board_idx] {
-                            println!("board[{}] wins!", board_idx);
                             board_wins[board_idx] = true;
                             num_board_wins += 1;
                         }
                     }
                     col = (col + 1) % board_size;
                 }
-                // print!("\n");
             }
-            // println!("====");
 
-            // calculate winning score
+            // calculate (last) winning score
             if num_board_wins == num_boards {
                 let mut sum = 0;
                 for row in board {
@@ -78,7 +67,7 @@ fn main() {
                     }
                 }
                 println!("board[{}] sum * drawn {}", board_idx, sum * n);
-                break;
+                std::process::exit(0);
             }
 
             board_idx += 1;
