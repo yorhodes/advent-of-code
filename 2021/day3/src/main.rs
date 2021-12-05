@@ -1,5 +1,5 @@
 fn main() {
-    let binary_lines: Vec<&str> = include_str!("../test.txt").lines().collect();
+    let binary_lines: Vec<&str> = include_str!("../input.txt").lines().collect();
     let num_bits = binary_lines[0].len();
     let bit_counts_fn = |lines: &Vec<&str>, indices: Vec<usize>| {
         let mut bit_counts = vec![0; num_bits];
@@ -49,5 +49,5 @@ fn main() {
     retain_fn(&mut c02_candidates, true);
     let c02_rate = usize::from_str_radix(c02_candidates[0], 2).expect("binary string");
 
-    println!("oxygen * c02 {}", oxygen_rate as usize * c02_rate as usize);
+    println!("oxygen * c02 {}", oxygen_rate * c02_rate);
 }
