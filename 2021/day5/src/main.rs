@@ -1,5 +1,5 @@
 fn main() {
-    let lines = include_str!("../test.txt").lines();
+    let lines = include_str!("../input.txt").lines();
 
     type LineSegment = Vec<Vec<usize>>;
     let x1 = |l: &LineSegment| l[0][0];
@@ -37,14 +37,17 @@ fn main() {
             })
         }
     });
+    let mut num_overlap = 0;
     for row in matrix.iter() {
         for e in row.iter() {
-            if *e == 0 {
-                print!(".")
+            if *e >= 2 {
+                num_overlap += 1;
+                // print!(".")
             } else {
-                print!("{}", e);
+                // print!("{}", e);
             }
         }
-        print!("\n");
+        // print!("\n");
     }
+    println!("{}", num_overlap);
 }
