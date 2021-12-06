@@ -32,11 +32,11 @@ fn main() {
     let mut matrix = vec![vec![0; max_x + 1]; max_y + 1];
     line_segments.iter().for_each(|l| {
         if horizontal(l) {
-            (low_x(l)..high_x(l) + 1).for_each(|x| {
+            (low_x(l)..=high_x(l)).for_each(|x| {
                 matrix[y1(l)][x] += 1;
             })
         } else if vertical(l) {
-            (low_y(l)..high_y(l) + 1).for_each(|y| {
+            (low_y(l)..=high_y(l)).for_each(|y| {
                 matrix[y][x1(l)] += 1;
             })
         } else if diagonal(l) {
