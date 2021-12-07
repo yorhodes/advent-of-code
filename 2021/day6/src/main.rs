@@ -25,9 +25,8 @@ fn part_1(input: &str, days: usize) -> usize {
 const DATA: &str = include_str!("../input.txt");
 
 fn main() {
-    let days = 80;
-    println!("part 1: {}", part_1(DATA, days));
-    // println!("part 2: {}", part_2(DATA));
+    println!("part 1: {}", part_1(DATA, 80));
+    println!("part 2: {}", part_1(DATA, 256));
 }
 
 #[cfg(test)]
@@ -41,8 +40,8 @@ mod tests {
         assert_eq!(part_1(SAMPLE_DATA, 80), 5934);
     }
 
-    // #[test]
-    // fn test_2() {
-    //     assert_eq!(part_2(SAMPLE_DATA), 12);
-    // }
+    #[test]
+    fn test_2() {
+        assert_eq!(part_1(SAMPLE_DATA, 256), 26984457539);
+    }
 }
