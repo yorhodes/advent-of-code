@@ -10,12 +10,8 @@ fn part_1(input: &str, days: usize) -> usize {
 
     // run simulation
     for _ in 1..=days {
-        let num_zeroes = age_counts[0];
-        for i in 0..max_timer {
-            age_counts[i] = age_counts[i+1];
-        }
-        age_counts[6] += num_zeroes; // each day a 0 becomes a 6
-        age_counts[max_timer] = num_zeroes; // each day a 0 adds a new 8
+        age_counts.rotate_left(1); // 0 wraps to 8
+        age_counts[6] += age_counts[8]; // 6 increment by prior 0 count
     }
 
     // sum counts of each timer
