@@ -1,6 +1,5 @@
 fn part_1(input: &str, days: usize) -> usize {
-    let max_timer = 8;
-    let mut age_counts = vec![0; max_timer+1];
+    let mut age_counts = [0; 9];
 
     // construct counts of each timer
     input
