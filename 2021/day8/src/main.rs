@@ -61,9 +61,9 @@ fn part_2(input: &str) -> usize {
             signals.clone().filter(|s| s.len() == 6).for_each(|six_chars| {
                 let digit: usize;
                 if six_chars.is_superset(&digit_signal_sets[4]) {
-                    digit = 9;
+                    digit = 9; // 4 is missing two segments of 9
                 } else if six_chars.is_superset(&digit_signal_sets[1]) {
-                    digit = 0;
+                    digit = 0; // 1 is missing 4 segments of 0
                 } else {
                     digit = 6;
                 }
@@ -74,9 +74,9 @@ fn part_2(input: &str) -> usize {
             signals.filter(|s| s.len() == 5).for_each(|five_chars| {
                 let digit: usize;
                 if five_chars.is_subset(&digit_signal_sets[6]) {
-                    digit = 5;
+                    digit = 5; // 5 is missing one segment of 6
                 } else if five_chars.is_superset(&digit_signal_sets[1]) {
-                    digit = 3;
+                    digit = 3; // right side of 3 contains 1
                 } else {
                     digit = 2;
                 }
