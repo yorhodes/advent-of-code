@@ -1,4 +1,3 @@
-use core::panic;
 use std::{collections::HashSet};
 
 fn priority(c: char) -> u32 {
@@ -13,16 +12,10 @@ fn priority(c: char) -> u32 {
 fn part_1(input: &str) -> u32 {
     return input.lines().map(|rucksack| -> u32 {
         let (first_half, second_half) = rucksack.split_at(rucksack.len()/2);
-        let mut first_compartment: HashSet<char> = HashSet::new();
-        for c in first_half.chars() {
-            first_compartment.insert(c);
-        }
-        for c in second_half.chars() {
-            if first_compartment.contains(&c) {
-                return priority(c);
-            }
-        }
-        panic!("invalid rucksack");
+        let first_compartment: HashSet<char> = first_half.chars().collect();
+        let second_compartment: HashSet<char> = second_half.chars().collect();
+        let c = first_compartment.intersection(&second_compartment).last().unwrap();
+        return priority(*c);
     }).sum();
 }
 
@@ -31,10 +24,7 @@ fn part_2(input: &str) -> u32 {
     let mut group_index = 0;
     let mut sum: u32 = 0;
     for line in input.lines() {
-        let mut rucksack: HashSet<char> = HashSet::new();
-        for c in line.chars() {
-            rucksack.insert(c);
-        }
+        let rucksack: HashSet<char> = line.chars().collect();
         if group_index == 0 {
             group = rucksack;
         } else {
