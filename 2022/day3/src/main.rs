@@ -1,5 +1,5 @@
 use core::panic;
-use std::collections::HashSet;
+use std::{collections::HashSet};
 
 fn priority(c: char) -> u32 {
     let i = c as u32;
@@ -26,8 +26,26 @@ fn part_1(input: &str) -> u32 {
     }).sum();
 }
 
-fn part_2(_input: &str) -> u32 {
-    return 0;
+fn part_2(input: &str) -> u32 {
+    let mut group: HashSet<char> = HashSet::new();
+    let mut group_index = 0;
+    let mut sum: u32 = 0;
+    for line in input.lines() {
+        let mut rucksack: HashSet<char> = HashSet::new();
+        for c in line.chars() {
+            rucksack.insert(c);
+        }
+        if group_index == 0 {
+            group = rucksack;
+        } else {
+            group = group.intersection(&rucksack).map(|&x| x.clone()).collect();
+        }
+        if group_index == 2 {
+            sum += priority(group.drain().last().unwrap());
+        }
+        group_index = (group_index + 1) % 3;
+    }
+    return sum;
 }
 
 const DATA: &str = include_str!("../input.txt");
@@ -49,6 +67,6 @@ mod tests {
 
     #[test]
     fn test_2() {
-        assert_eq!(part_2(SAMPLE_DATA), 0);
+        assert_eq!(part_2(SAMPLE_DATA), 70);
     }
 }
