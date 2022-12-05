@@ -18,6 +18,7 @@ fn parse_move(input: char) -> Move {
 }
 
 #[repr(u32)]
+#[derive(PartialEq)]
 enum Result {
     LOSS,
     DRAW,
@@ -59,8 +60,30 @@ fn part_1(input: &str) -> u32 {
         .sum();
 }
 
-fn part_2(_input: &str) -> u32 {
-    return 0;
+fn gen_move(opponent: Move, player: char) -> Move {
+    let desired = match player {
+        'X' => Result::LOSS,
+        'Y' => Result::DRAW,
+        'Z' => Result::WIN,
+        _ => panic!("invalid result")
+    };
+    for potential_move in [Move::ROCK, Move::PAPER, Move::SCISSORS] {
+        if result(opponent, potential_move) == desired {
+            return potential_move;
+        }
+    }
+    panic!("invalid move");
+}
+
+fn part_2(input: &str) -> u32 {
+    return input
+        .lines()
+        .map(|move_string| -> u32 {
+            let opponent = parse_move(move_string.chars().nth(0).unwrap());
+            let player = gen_move(opponent, move_string.chars().nth(2).unwrap());
+            return score(opponent, player);
+        })
+        .sum();
 }
 
 const DATA: &str = include_str!("../input.txt");
@@ -82,6 +105,6 @@ mod tests {
 
     #[test]
     fn test_2() {
-        assert_eq!(part_2(SAMPLE_DATA), 45000);
+        assert_eq!(part_2(SAMPLE_DATA), 12);
     }
 }
