@@ -1,10 +1,6 @@
-fn part_1(input: &str) -> String {
-    let (columns, moves) = input.split_once("\n\n").unwrap();
-    
+fn build_columns(columns: &str) -> Vec<Vec<char>> {
     let num_columns = (columns.lines().next().unwrap().len() + 1) / 4;
-
-    println!("num_columns: {}", num_columns);
-
+    
     let mut stacks: Vec<Vec<char>> = vec![Vec::new(); num_columns];
     
     for column in columns.lines().rev() {
@@ -16,12 +12,23 @@ fn part_1(input: &str) -> String {
             }
         }
     }
+    return stacks;
+}
+
+fn parse_move(m: &str) -> (usize, usize, usize) {
+    let mut sections = m.split(' ').skip(1).step_by(2);
+    let count = sections.next().unwrap().parse::<usize>().unwrap();
+    let from = sections.next().unwrap().parse::<usize>().unwrap() - 1;
+    let to = sections.next().unwrap().parse::<usize>().unwrap() - 1;
+    return (count, from, to);
+}
+
+fn part_1(input: &str) -> String {
+    let (columns, moves) = input.split_once("\n\n").unwrap();
+    let mut stacks = build_columns(columns);
 
     for move_str in moves.lines() {
-        let mut sections = move_str.split(' ').skip(1).step_by(2);
-        let count = sections.next().unwrap().parse::<usize>().unwrap();
-        let from = sections.next().unwrap().parse::<usize>().unwrap() - 1;
-        let to = sections.next().unwrap().parse::<usize>().unwrap() - 1;
+        let (count, from, to) = parse_move(move_str);
         for _ in 0..count {
             let c = stacks[from].pop().unwrap();
             stacks[to].push(c);
@@ -32,8 +39,18 @@ fn part_1(input: &str) -> String {
 
 }
 
-fn part_2(_input: &str) -> u32 {
-    return 0;
+fn part_2(input: &str) -> String {
+    let (columns, moves) = input.split_once("\n\n").unwrap();
+    let mut stacks = build_columns(columns);
+
+    for move_str in moves.lines() {
+        let (count, from, to) = parse_move(move_str);
+        let len = stacks[from].len();
+        let slice: Vec<char> = stacks[from].drain(len - count..len).collect();
+        stacks[to].extend(slice);
+    }
+
+    return stacks.iter().map(|stack| stack.last().unwrap()).collect();
 }
 
 const DATA: &str = include_str!("../input.txt");
@@ -55,6 +72,6 @@ mod tests {
 
     #[test]
     fn test_2() {
-        assert_eq!(part_2(SAMPLE_DATA), 0);
+        assert_eq!(part_2(SAMPLE_DATA), "MCD");
     }
 }
