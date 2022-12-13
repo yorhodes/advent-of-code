@@ -75,8 +75,60 @@ fn part_1(input: &str) -> u32 {
     return visible;
 }
 
-fn part_2(_input: &str) -> u32 {
-    return 0;
+fn scenic_distance(matrix: &Vec<Vec<u32>>, row: usize, column: usize) -> u32 {
+    let tree = matrix[row][column];
+    let mut left_distance = 0;
+    for i in (0..column).rev() {
+        left_distance += 1;
+        if matrix[row][i] >= tree {
+            break;
+        }
+    }
+
+    let mut right_distance = 0;
+    for i in column+1..matrix.len() {
+        right_distance += 1;
+        if matrix[row][i] >= tree {
+            break;
+        }
+    }
+
+    let mut top_distance = 0;
+    for i in (0..row).rev() {
+        top_distance += 1;
+        if matrix[i][column] >= tree {
+            break;
+        }
+    }
+
+    let mut bottom_distance = 0;
+    for i in row+1..matrix.len() {
+        bottom_distance += 1;
+        if matrix[i][column] >= tree {
+            break;
+        }
+    }
+
+    return left_distance * right_distance * top_distance * bottom_distance;
+}
+
+fn part_2(input: &str) -> u32 {
+    let lines = input.lines();
+    let matrix: Vec<Vec<u32>> = lines.map(|line| line.chars().map(|x| x as u32 - 48).collect()).collect();
+    let rows = matrix.len();
+    let columns = matrix[0].len();
+
+    let mut max = 0;
+    for i in 1..rows-1 {
+        for j in 1..columns-1 {
+            let distance = scenic_distance(&matrix, i, j);
+            if distance > max {
+                max = distance;
+            }
+        }
+    }
+
+    return max;
 }
 
 const DATA: &str = include_str!("../input.txt");
@@ -99,6 +151,6 @@ mod tests {
 
     #[test]
     fn test_2() {
-        assert_eq!(part_2(TEST_DATA), 0);
+        assert_eq!(part_2(TEST_DATA), 8);
     }
 }
